@@ -22,6 +22,7 @@ import com.amazon.identity.auth.device.api.authorization.AuthorizeListener;
 import com.amazon.identity.auth.device.api.authorization.AuthorizeRequest;
 import com.amazon.identity.auth.device.api.authorization.AuthorizeResult;
 import com.amazon.identity.auth.device.api.authorization.ProfileScope;
+import com.amazon.identity.auth.device.api.authorization.ScopeFactory;
 import com.amazon.identity.auth.device.api.authorization.Scope;
 import com.amazon.identity.auth.device.api.authorization.User;
 import com.amazon.identity.auth.device.api.workflow.RequestContext;
@@ -30,7 +31,10 @@ import com.amazon.identity.auth.device.api.workflow.RequestContext;
 public class AmazonLoginPlugin extends CordovaPlugin {
     private static final String TAG = "AmazonLoginPlugin";
 
+    private static final String CODE_CHALLENGE_METHOD = "S256";
+
     private static final String ACTION_AUTHORIZE = "authorize";
+    private static final String ACTION_AUTHORIZE_AVS = "authorizeAVS";
     private static final String ACTION_FETCH_USER_PROFILE = "fetchUserProfile";
     private static final String ACTION_GET_TOKEN = "getToken";
     private static final String ACTION_SIGNOUT = "signOut";
@@ -79,7 +83,6 @@ public class AmazonLoginPlugin extends CordovaPlugin {
 
     public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
 
-
         this.savedCallbackContext = callbackContext;
 
         if (ACTION_AUTHORIZE.equals(action)) {
@@ -93,7 +96,16 @@ public class AmazonLoginPlugin extends CordovaPlugin {
                             .build());
                 }
             });
-        } else if (ACTION_FETCH_USER_PROFILE.equals(action)) {
+        } else if (ACTION_AUTHORIZE_AVS.equals(action)) {
+              Log.i(TAG, "AVS Authorization started");
+
+              cordova.getThreadPool().execute(new Runnable() {
+                  public void run() {
+                    AmazonLoginPlugin.this.startAvsAuthorization(args.optJSONObject(0), callbackContext);
+                  }
+              });
+
+          } else if (ACTION_FETCH_USER_PROFILE.equals(action)) {
             Log.i(TAG, "User Profile fetching started");
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {
@@ -202,5 +214,35 @@ public class AmazonLoginPlugin extends CordovaPlugin {
         } catch (Exception e) {
             savedCallbackContext.error("Trouble obtaining user, error: " + e.getMessage());
         }
+    }
+
+    private void startAvsAuthorization(final JSONObject options, CallbackContext callbackContext) {
+
+          if (options == null) {
+            callbackContext.error("AVS Authorization options required");
+            return;
+          }
+
+          final JSONObject scopeData = new JSONObject();
+          final JSONObject productInstanceAttributes = new JSONObject();
+
+          try {
+
+              productInstanceAttributes.put("deviceSerialNumber", options.getString("deviceSerialNumber"));
+              scopeData.put("productInstanceAttributes", productInstanceAttributes);
+              scopeData.put("productID", options.getString("productID"));
+
+              AuthorizationManager.authorize(new AuthorizeRequest.Builder(requestContext)
+                  .addScopes(
+                        ScopeFactory.scopeNamed("alexa:voice_service:pre_auth"),
+                        ScopeFactory.scopeNamed("alexa:all", scopeData)
+                  )
+                  .forGrantType(AuthorizeRequest.GrantType.AUTHORIZATION_CODE)
+                  .withProofKeyParameters(options.getString("codeChallenge"), CODE_CHALLENGE_METHOD)
+                  .build());
+
+          } catch (JSONException e) {
+              callbackContext.error(e.toString());
+          }
     }
 }
