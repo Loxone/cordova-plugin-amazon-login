@@ -5,6 +5,9 @@ var AmazonLoginPlugin = {
   authorize: function (options, successCallback, errorCallback) {
     exec(successCallback, errorCallback, PLUGIN_NAME, 'authorize', [options]);
   },
+  authorizeAVS: function (options, successCallback, errorCallback) {
+    exec(successCallback, errorCallback, PLUGIN_NAME, 'authorizeAVS', [options]);
+  },
   fetchUserProfile: function (successCallback, errorCallback) {
     exec(successCallback, errorCallback, PLUGIN_NAME, 'fetchUserProfile', []);
   },
