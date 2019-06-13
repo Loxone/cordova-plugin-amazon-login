@@ -243,6 +243,9 @@ public class AmazonLoginPlugin extends CordovaPlugin {
 
           } catch (JSONException e) {
               callbackContext.error(e.toString());
+
+          } catch (Exception e) {
+              callbackContext.error(e.toString());
           }
     }
 }
