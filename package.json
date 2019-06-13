@@ -1,6 +1,9 @@
 {
   "name": "cordova-plugin-amazon-login",
   "version": "2.0.0",
+  "scripts": {
+    "postversion": "node ./scripts/sync-plugin-version.js"
+  },
   "cordova": {
     "id": "cordova-plugin-amazon-login",
     "platforms": [
