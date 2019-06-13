@@ -101,7 +101,7 @@ public class AmazonLoginPlugin extends CordovaPlugin {
 
               cordova.getThreadPool().execute(new Runnable() {
                   public void run() {
-                    AmazonLoginPlugin.this.startAvsAuthorization(args.optJSONObject(0), callbackContext);
+                    startAvsAuthorization(args.optJSONObject(0), callbackContext);
                   }
               });
 
