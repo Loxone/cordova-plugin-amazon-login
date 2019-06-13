@@ -4,6 +4,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="cordova-plugin-amazon-login"
         version="2.0.0">
+
     <name>Login with Amazon Plugin</name>
     <description>A Cordova Plugin for Login with Amazon. Use your Amazon account to authenticate with the app.</description>
     <license>MIT</license>
@@ -11,12 +12,13 @@
     <repo>https://github.com/edu-com/cordova-plugin-amazon-login.git</repo>
     <issue>https://github.com/edu-com/cordova-plugin-amazon-login/issues</issue>
 
-    <js-module src="www/plugin.js" name="plugin">
+    <js-module src="www/AmazonLoginPlugin.js" name="plugin">
         <clobbers target="AmazonLoginPlugin"/>
     </js-module>
 
     <!-- android -->
     <platform name="android">
+
         <config-file parent="/*" target="res/xml/config.xml" >
             <feature name="AmazonLoginPlugin">
                 <param name="android-package" value="com.education.AmazonLoginPlugin"/>
@@ -45,31 +47,34 @@
         </config-file>
 
         <source-file src="src/android/AmazonLoginPlugin.java" target-dir="src/com/education"/>
-        <framework src="src/android/build-extras.gradle" custom="true" type="gradleReference" />
+        <source-file src="src/android/login-with-amazon-sdk.jar" target-dir="libs"/>
         <hook type="after_prepare" src="scripts/android/after_prepare.js"/>
+
     </platform>
 
     <!-- ios -->
     <platform name="ios">
+
+        <preference name="LWA_IOS_API_KEY"/>
+
         <config-file target="config.xml" parent="/*">
             <feature name="AmazonLoginPlugin">
                 <param name="ios-package" value="AmazonLoginPlugin" onload="true"/>
             </feature>
             <plugin name="AmazonLoginPlugin" value="AmazonLoginPlugin"/>
-            <access origin='*.amazon.com' allows-arbitrary-loads-in-media='true'
-                    allows-arbitrary-loads-in-web-content='true' allows-local-networking='true'/>
+            <access origin="*.amazon.com" allows-arbitrary-loads-in-media="true"
+                    allows-arbitrary-loads-in-web-content="true" allows-local-networking="true"/>
         </config-file>
 
         <header-file src="src/ios/AmazonLoginPlugin.h"/>
         <source-file src="src/ios/AmazonLoginPlugin.m"/>
 
+        <framework src="src/ios/LoginWithAmazon.framework" custom="true"/>
         <framework src="SafariServices.framework" weak="true"/>
         <framework src="Security.framework" weak="true"/>
 
-        <preference name="IOS_API_KEY"/>
-
         <config-file target="*-Info.plist" parent="APIKey">
-            <string>$IOS_API_KEY</string>
+            <string>$LWA_IOS_API_KEY</string>
         </config-file>
     </platform>
 
