@@ -89,6 +89,84 @@
                                                 }];
 }
 
+- (void)authorizeAVS:(CDVInvokedUrlCommand *)command {
+
+        NSDictionary* options = [[NSDictionary alloc]init];
+
+        if ([command.arguments count] > 0) {
+            options = [command argumentAtIndex:0];
+        }
+
+        NSDictionary *scopeData = @{@"productID": [options objectForKey:@"productID"],
+                              @"productInstanceAttributes": @{@"deviceSerialNumber": [options objectForKey:@"deviceSerialNumber"]}};
+
+          id alexaAllScope = [AMZNScopeFactory scopeWithName:@"alexa:all" data:scopeData];
+          id alexaSplashScope = [AMZNScopeFactory scopeWithName:@"alexa:voice_service:pre_auth"];
+
+          AMZNAuthorizeRequest *request = [[AMZNAuthorizeRequest alloc] init];
+          request.scopes = @[alexaSplashScope, alexaAllScope];
+          request.codeChallenge = [options objectForKey:@"codeChallenge"];
+          request.codeChallengeMethod = @"S256";
+          request.grantType = AMZNAuthorizationGrantTypeCode;
+
+        // Make an Authorize call to the Login with Amazon SDK.
+        [[AMZNAuthorizationManager sharedManager] authorize:request
+                                                withHandler:^(AMZNAuthorizeResult *result, BOOL
+                                                              userDidCancel, NSError *error) {
+
+                                                    if (error) {
+                                                        // Handle errors from the SDK or authorization server.
+                                                        if(error.code == kAIApplicationNotAuthorized) {
+                                                            // Show authorize user button.
+                                                            // NSLog(@"AmazonLoginPlugin authorize request NotAuthorized");
+
+                                                            NSString* payload =@"authorize request NotAuthorized";
+
+                                                            CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:payload];
+
+                                                            // The sendPluginResult method is thread-safe.
+                                                            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+
+                                                        } else {
+                                                            // NSLog(@"AmazonLoginPlugin authorize request failed");
+                                                            NSString* payload = error.userInfo[@"AMZNLWAErrorNonLocalizedDescription"];
+
+                                                            CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:payload];
+
+                                                            // The sendPluginResult method is thread-safe.
+                                                            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+                                                        }
+
+                                                    } else if (userDidCancel) {
+                                                        // Handle errors caused when user cancels login.
+                                                        // NSLog(@"AmazonLoginPlugin authorize request canceled");
+                                                       NSString* payload = @"authorize request canceled";
+
+                                                        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:payload];
+
+                                                        // The sendPluginResult method is thread-safe.
+                                                        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+
+                                                    } else {
+
+                                                        // NSLog(@"AmazonLoginPlugin authorize success");
+                                                        // Authentication was successful.
+
+                                                        NSDictionary *dictionary = @{
+                                                                                     @"authorizationCode": result.authorizationCode,
+                                                                                     @"clientId": result.clientId,
+                                                                                     @"redirectUri": result.redirectUri
+                                                                                     };
+
+
+                                                        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
+
+                                                        // The sendPluginResult method is thread-safe.
+                                                        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+                                                    }
+                                                }];
+}
+
 - (void)fetchUserProfile:(CDVInvokedUrlCommand *)command {
     //NSLog(@"AmazonLoginPlugin fetchUserProfile");
 
