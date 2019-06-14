@@ -199,14 +199,29 @@ public class AmazonLoginPlugin extends CordovaPlugin {
         if (savedCallbackContext == null) {
             return;
         }
+
+        if (result == null) {
+            savedCallbackContext.error("Authorize result is null");
+            return;
+        }
+
         JSONObject authResult = new JSONObject();
+
         try {
+
             authResult.put(FIELD_ACCESS_TOKEN, result.getAccessToken());
             authResult.put(FIELD_AUTHORIZATION_CODE, result.getAuthorizationCode());
             authResult.put(FIELD_CLIENT_ID, result.getClientId());
             authResult.put(FIELD_REDIRECT_URI, result.getRedirectURI());
-            authResult.put(FIELD_USER, new JSONObject(result.getUser().getUserInfo()));
+
+            User resultUser = result.getUser();
+
+            if (resultUser != null) {
+                authResult.put(FIELD_USER, new JSONObject(resultUser.getUserInfo()));
+            }
+
             savedCallbackContext.success(authResult);
+
         } catch (Exception e) {
             savedCallbackContext.error("Trouble obtaining Authorize Result, error: " + e.getMessage());
         }
