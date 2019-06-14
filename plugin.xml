@@ -68,9 +68,9 @@
         <header-file src="src/ios/AmazonLoginPlugin.h"/>
         <source-file src="src/ios/AmazonLoginPlugin.m"/>
 
-        <framework src="src/ios/LoginWithAmazon.framework" custom="true"/>
-        <framework src="SafariServices.framework" weak="true"/>
-        <framework src="Security.framework" weak="true"/>
+        <framework src="src/ios/LoginWithAmazon.framework" custom="true" embed="true"/>
+        <framework src="SafariServices.framework"/>
+        <framework src="Security.framework"/>
 
         <hook type="after_prepare" src="scripts/ios/sync-ios-api-key.js"/>
 
