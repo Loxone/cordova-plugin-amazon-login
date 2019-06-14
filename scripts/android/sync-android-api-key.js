@@ -8,4 +8,4 @@ var apiKeyFilePath = 'platforms/android/app/src/main/assets/api_key.txt';
 var target = process.env.TARGET || 'debug';
 var config = getConfig();
 
-fs.writeFileSync(apiKeyFilePath, config.android[target].key, 'utf8');
+fs.writeFileSync(apiKeyFilePath, config.android[target].api_key, 'utf8');
