@@ -225,6 +225,10 @@ public class AmazonLoginPlugin extends CordovaPlugin {
 
     private void startAvsAuthorization(final JSONObject options, CallbackContext callbackContext) {
 
+          if (callbackContext == null) {
+            return;
+          }
+
           if (options == null) {
             callbackContext.error("AVS Authorization options required");
             return;
