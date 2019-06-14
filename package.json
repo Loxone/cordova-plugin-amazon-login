@@ -2,7 +2,7 @@
   "name": "cordova-plugin-amazon-login",
   "version": "3.0.0",
   "scripts": {
-    "postversion": "node ./scripts/sync-plugin-version.js"
+    "version": "node ./scripts/sync-plugin-version.js && git add ."
   },
   "cordova": {
     "id": "cordova-plugin-amazon-login",
