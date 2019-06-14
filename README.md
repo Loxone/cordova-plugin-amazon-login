@@ -95,7 +95,18 @@ Failure function returns an error String.
 
 ### FetchUserProfile
 
-TBD
+`window.AmazonLogin.authorizeAVS(Function success, Function failure)`
+
+Success function returns an Object like:
+
+	{
+        name: "Full Name",
+        email: "email@example.com",
+        user_id: "634565435",
+        postal_code: '12345'
+    }
+
+Failure function returns an error String.
 
 ### GetToken
 
