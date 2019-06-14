@@ -3,7 +3,7 @@
 A Cordova Plugin for Login with Amazon. Use your Amazon account to authenticate with the app.
 This plugin is a wrapper around native android and iOS libraries developed by Amazon.
  
-##Prerequisites
+## Prerequisites
 
 - Amazon API keys for both iOS and Android 
 
