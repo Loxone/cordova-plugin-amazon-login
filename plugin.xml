@@ -74,14 +74,14 @@
 
         <hook type="after_prepare" src="scripts/ios/sync-ios-api-key.js"/>
 
-        <config-file target="*-Info.plist" parent="URLTypes">
+        <config-file target="*-Info.plist" parent="CFBundleURLTypes">
             <array>
                 <dict>
-                    <key>URLIdentifier</key>
+                    <key>CFBundleURLName</key>
                     <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-                    <key>URLSchemes</key>
+                    <key>CFBundleURLSchemes</key>
                     <array>
-                        amzn-$(PRODUCT_BUNDLE_IDENTIFIER)
+                        <string>amzn-$(PRODUCT_BUNDLE_IDENTIFIER)</string>
                     </array>
                 </dict>
             </array>
