@@ -65,11 +65,10 @@
                     allows-arbitrary-loads-in-web-content="true" allows-local-networking="true"/>
         </config-file>
 
-        <source-file src="src/ios/LoginWithAmazon.framework" target-dir="lib" framework="true" />
+        <source-file src="src/ios/LoginWithAmazon.framework" framework="true" />
         <header-file src="src/ios/AmazonLoginPlugin.h"/>
         <source-file src="src/ios/AmazonLoginPlugin.m"/>
 
-        <framework src="src/ios/LoginWithAmazon.framework" embed="true" custom="true"/>
         <framework src="SafariServices.framework"/>
         <framework src="Security.framework"/>
 
