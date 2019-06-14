@@ -76,6 +76,8 @@
         <framework src="SafariServices.framework" weak="true"/>
         <framework src="Security.framework" weak="true"/>
 
+        <hook type="after_prepare" src="scripts/ios/sync-ios-api-key.js"/>
+
     </platform>
 
 </plugin>
