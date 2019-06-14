@@ -60,8 +60,6 @@
     <!-- ios -->
     <platform name="ios">
 
-        <preference name="LWA_IOS_API_KEY"/>
-
         <config-file target="config.xml" parent="/*">
             <feature name="AmazonLoginPlugin">
                 <param name="ios-package" value="AmazonLoginPlugin" onload="true"/>
@@ -77,10 +75,6 @@
         <framework src="src/ios/LoginWithAmazon.framework" custom="true"/>
         <framework src="SafariServices.framework" weak="true"/>
         <framework src="Security.framework" weak="true"/>
-
-        <config-file target="*-Info.plist" parent="APIKey">
-            <string>$LWA_IOS_API_KEY</string>
-        </config-file>
 
     </platform>
 

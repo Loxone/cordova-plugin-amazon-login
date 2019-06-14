@@ -35,6 +35,8 @@
     "cordova-ios"
   ],
   "dependencies": {
-    "fs-extra": "^8.0.1"
+    "fs-extra": "^8.0.1",
+    "glob": "^7.1.4",
+    "plist": "^3.0.1"
   }
 }
