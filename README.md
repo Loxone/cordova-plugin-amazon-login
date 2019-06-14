@@ -64,9 +64,9 @@ Success function returns an Object like:
 		accessToken: "...",
 		user: {
 		    name: "Full Name",
-            email: "email@example.com",
-            user_id: "634565435",
-            postal_code: '12345'
+                email: "email@example.com",
+                user_id: "634565435",
+                postal_code: '12345'
 		}
 	}
 
@@ -85,9 +85,9 @@ Success function returns an Object like:
 		redirectUri: "...",
 		user: {
 		    name: "Full Name",
-            email: "email@example.com",
-            user_id: "634565435",
-            postal_code: '12345'
+                email: "email@example.com",
+                user_id: "634565435",
+                postal_code: '12345'
 		}
 	}
 
@@ -107,9 +107,9 @@ Success function returns an Object like:
 		accessToken: "...",
 		user: {
 		    name: "Full Name",
-            email: "email@example.com",
-            user_id: "634565435",
-            postal_code: '12345'
+                email: "email@example.com",
+                user_id: "634565435",
+                postal_code: '12345'
 		}
 	}
 
