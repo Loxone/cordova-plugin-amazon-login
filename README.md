@@ -1,3 +1,15 @@
+# Fork Notes (Preface)
+
+This fork aims to simplify Amazon's [AVS Authorization Mechanism](https://developer.amazon.com/docs/alexa-voice-service/authorize-companion-app.html#sdk).
+
+The setup from the original plugin has also been greatly simplified by:
+
+- baking in both Android and iOS LWA libraries
+- updating the plugin config to include automatable steps
+- adding cordova hooks for copying API Keys at the prepare step
+
+*NOTE:* The android APIs are targeted for cordova-android 7+
+
 # Cordova Plugin Login with Amazon
 
 A Cordova Plugin for Login with Amazon. Use your Amazon account to authenticate with the app.
