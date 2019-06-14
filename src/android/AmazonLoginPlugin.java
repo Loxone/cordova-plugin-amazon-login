@@ -51,7 +51,7 @@ public class AmazonLoginPlugin extends CordovaPlugin {
     private static final String FIELD_AUTHORIZATION_CODE = "authorizationCode";
     private static final String FIELD_USER = "user";
     private static final String FIELD_CLIENT_ID = "clientId";
-    private static final String FIELD_REDIRECT_URI = "redirectURI";
+    private static final String FIELD_REDIRECT_URI = "redirectUri";
 
     private RequestContext requestContext;
     private CallbackContext savedCallbackContext;
