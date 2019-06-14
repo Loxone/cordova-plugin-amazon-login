@@ -31,7 +31,7 @@
             <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
         </config-file>
 
-        <config-file target="AndroidManifest.xml" parent="/manifest/application/activity[@android:name='MainActivity]'">
+        <config-file target="AndroidManifest.xml" parent="/manifest/application/activity[@android:name='MainActivity']">
             <activity android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
         </config-file>
 
