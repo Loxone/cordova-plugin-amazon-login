@@ -74,6 +74,19 @@
 
         <hook type="after_prepare" src="scripts/ios/sync-ios-api-key.js"/>
 
+        <config-file target="*-Info.plist" parent="URLTypes">
+            <array>
+                <dict>
+                    <key>URLIdentifier</key>
+                    <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+                    <key>URLSchemes</key>
+                    <array>
+                        amzn-$(PRODUCT_BUNDLE_IDENTIFIER)
+                    </array>
+                </dict>
+            </array>
+        </config-file>
+
     </platform>
 
 </plugin>
