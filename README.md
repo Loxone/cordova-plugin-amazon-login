@@ -5,16 +5,10 @@ This plugin is a wrapper around native android and iOS libraries developed by Am
  
 ##Prerequisites
 
-### Android
+- Amazon API keys for both iOS and Android 
 
-- Download the [Amazon Mobile App SDK](https://developer.amazon.com/public/resources/development-tools/sdk)  and extract the files to a directory on your hard drive.
-- You should see a `login-with-amazon.jar` file in the LoginWithAmazon parent directory.
-- Copy `login-with-amazon.jar` file to `platforms/android/libs/login-with-amazon.jar` of your Cordova project.
-- Create configuration file for Amazon API keys `amazon-login.config.json`
-- If you do not have your API Key yet, see [Android App Signatures and API Keys](https://developer.amazon.com/public/apis/engage/login-with-amazon/docs/register_android.html#Android%20App%20Signatures%20and%20API%20Keys) and follow the instructions under "Retrieving an Android API Key".
-- Set your Amazon API keys in `amazon-login.config.json`
-
-For example, your `amazon-login.config.json` might look like this:
+- Configuration file for Amazon API keys at the root of your 
+project named `amazon-login.config.json`, which should have this format:
 
 ```
 {
@@ -32,31 +26,18 @@ For example, your `amazon-login.config.json` might look like this:
 }
 ```
 
-
-By default, the value of API key from `debug` section will be used.
-In order to use API key from `release` section 
+*NOTE:*
+By default, the value of API key from `debug` section will be used for Android.
+In order to use API key from `release` section
 
 ```
 TARGET=release cordova prepare
 ```
-
-### iOS
-
-- If you have not installed Xcode, you can get it from https://developer.apple.com/xcode.
-- Download the [Amazon Mobile App SDK] (https://developer.amazon.com/public/resources/development-tools/sdk) and extract the files to a directory on your hard drive.
-- You should see a LoginWithAmazon.framework directory in the LoginWithAmazon parent directory. This contains the Login with Amazon library.
-- With your project open in Xcode, select the Frameworks folder, then click File from the main menu and select Add Files to "project". In the dialog, select LoginWithAmazon.framework and click Add. 
-- Select Build Settings. Click All to view all settings.
-- Under Search Paths, ensure that the LoginWithAmazon.framework directory is in the Framework Search Paths. For example:
-- In the main menu, click Product and select Build. The build should complete successfully.
-- [Add a URL Scheme to Your App Property List](https://developer.amazon.com/public/apis/engage/login-with-amazon/docs/create_ios_project.html#add_url_scheme) 
-- Get Amazon API key for your iOS app
- 
  
 ## Installation
 
 ```
-cordova plugin add https://github.com/edu-com/cordova-plugin-amazon-login.git#v2.0.0 --variable IOS_API_KEY="your-key-here"
+cordova plugin add https://github.com/jospete/cordova-plugin-amazon-login.git#release/3.0.2
 ```
 
 ## API
@@ -74,12 +55,31 @@ Success function returns an Object like:
             email: "email@example.com",
             user_id: "634565435",
             postal_code: '12345'
-
 		}
 	}
 
 Failure function returns an error String.
 
+### AuthorizeAVS
+
+`window.AmazonLogin.authorizeAVS(Object options, Function success, Function failure)`
+
+Success function returns an Object like:
+
+	{
+		accessToken: "...",
+		authorizationCode: "...",
+		clientId: "...",
+		redirectUri: "...",
+		user: {
+		    name: "Full Name",
+            email: "email@example.com",
+            user_id: "634565435",
+            postal_code: '12345'
+		}
+	}
+
+Failure function returns an error String.
 
 ### FetchUserProfile
 
@@ -98,7 +98,6 @@ Success function returns an Object like:
             email: "email@example.com",
             user_id: "634565435",
             postal_code: '12345'
-
 		}
 	}
 
@@ -108,3 +107,11 @@ Failure function returns an error String.
 ### SignOut
 
 `window.AmazonLogin.signOut(Function success, Function failure)`
+
+## Resources
+
+- [Authorization For AVS](https://developer.amazon.com/docs/alexa-voice-service/authorize-companion-app.html#sdk)
+- [Login With Amazon Docs](https://developer.amazon.com/docs/login-with-amazon/minitoc-lwa-overview.html)
+- [Amazon Mobile App SDK](https://developer.amazon.com/public/resources/development-tools/sdk)
+
+*NOTE:* API Key registration is defined at step 3 in each of the iOS and Android LWA Docs
