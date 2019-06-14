@@ -39,6 +39,13 @@ public class AmazonLoginPlugin extends CordovaPlugin {
     private static final String ACTION_GET_TOKEN = "getToken";
     private static final String ACTION_SIGNOUT = "signOut";
 
+    private static final String OPTION_KEY_PRODUCT_ID = "productID";
+    private static final String OPTION_KEY_DEVICE_SERIAL_NUMBER = "deviceSerialNumber";
+    private static final String OPTION_KEY_CODE_CHALLENGE = "codeChallenge";
+
+    private static final String KEY_PRODUCT_INSTANCE_ATTRS = "productInstanceAttributes";
+    private static final String SCOPE_AVS_PRE_AUTH = "alexa:voice_service:pre_auth";
+    private static final String SCOPE_ALEXA_ALL = "alexa:all";
 
     private static final String FIELD_ACCESS_TOKEN = "accessToken";
     private static final String FIELD_AUTHORIZATION_CODE = "authorizationCode";
@@ -228,17 +235,17 @@ public class AmazonLoginPlugin extends CordovaPlugin {
 
           try {
 
-              productInstanceAttributes.put("deviceSerialNumber", options.getString("deviceSerialNumber"));
-              scopeData.put("productInstanceAttributes", productInstanceAttributes);
-              scopeData.put("productID", options.getString("productID"));
+              productInstanceAttributes.put(OPTION_KEY_DEVICE_SERIAL_NUMBER, options.getString(OPTION_KEY_DEVICE_SERIAL_NUMBER));
+              scopeData.put(KEY_PRODUCT_INSTANCE_ATTRS, productInstanceAttributes);
+              scopeData.put(OPTION_KEY_PRODUCT_ID, options.getString(OPTION_KEY_PRODUCT_ID));
 
               AuthorizationManager.authorize(new AuthorizeRequest.Builder(requestContext)
                   .addScopes(
-                        ScopeFactory.scopeNamed("alexa:voice_service:pre_auth"),
-                        ScopeFactory.scopeNamed("alexa:all", scopeData)
+                        ScopeFactory.scopeNamed(SCOPE_AVS_PRE_AUTH),
+                        ScopeFactory.scopeNamed(SCOPE_ALEXA_ALL, scopeData)
                   )
                   .forGrantType(AuthorizeRequest.GrantType.AUTHORIZATION_CODE)
-                  .withProofKeyParameters(options.getString("codeChallenge"), CODE_CHALLENGE_METHOD)
+                  .withProofKeyParameters(options.getString(OPTION_KEY_CODE_CHALLENGE), CODE_CHALLENGE_METHOD)
                   .build());
 
           } catch (JSONException e) {
