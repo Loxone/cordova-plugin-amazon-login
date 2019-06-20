@@ -49,7 +49,7 @@ TARGET=release cordova prepare
 ## Installation
 
 ```
-cordova plugin add https://github.com/jospete/cordova-plugin-amazon-login.git#release/3.0.2
+cordova plugin add https://github.com/jospete/cordova-plugin-amazon-login.git#release/3.0.3
 ```
 
 ## API
