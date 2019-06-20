@@ -65,12 +65,12 @@
                     allows-arbitrary-loads-in-web-content="true" allows-local-networking="true"/>
         </config-file>
 
-        <source-file src="src/ios/LoginWithAmazon.framework" framework="true" />
         <header-file src="src/ios/AmazonLoginPlugin.h"/>
         <source-file src="src/ios/AmazonLoginPlugin.m"/>
 
-        <framework src="SafariServices.framework"/>
         <framework src="Security.framework"/>
+        <framework src="SafariServices.framework"/>
+        <framework src="src/ios/LoginWithAmazon.framework" custom="true"/>
 
         <hook type="after_prepare" src="scripts/ios/sync-ios-api-key.js"/>
 
