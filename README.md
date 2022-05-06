@@ -54,24 +54,6 @@ cordova plugin add https://github.com/jospete/cordova-plugin-amazon-login.git#re
 
 ## API
 
-### Authorize
-
-`window.AmazonLogin.authorize(Object options, Function success, Function failure)`
-
-Success function returns an Object like:
-
-	{
-		accessToken: "...",
-		user: {
-		    name: "Full Name",
-                email: "email@example.com",
-                user_id: "634565435",
-                postal_code: '12345'
-		}
-	}
-
-Failure function returns an error String.
-
 ### AuthorizeAVS
 
 `window.AmazonLogin.authorizeAVS(Object options, Function success, Function failure)`
@@ -92,44 +74,6 @@ Success function returns an Object like:
 	}
 
 Failure function returns an error String.
-
-### FetchUserProfile
-
-`window.AmazonLogin.authorizeAVS(Function success, Function failure)`
-
-Success function returns an Object like:
-
-	{
-        name: "Full Name",
-        email: "email@example.com",
-        user_id: "634565435",
-        postal_code: '12345'
-    }
-
-Failure function returns an error String.
-
-### GetToken
-
-`window.AmazonLoginPlugin.getToken(Object options,Function success, Function failure)`
-
-Success function returns an Object like:
-
-	{
-		accessToken: "...",
-		user: {
-		    name: "Full Name",
-                email: "email@example.com",
-                user_id: "634565435",
-                postal_code: '12345'
-		}
-	}
-
-Failure function returns an error String.
-
-
-### SignOut
-
-`window.AmazonLogin.signOut(Function success, Function failure)`
 
 ## Resources
 
