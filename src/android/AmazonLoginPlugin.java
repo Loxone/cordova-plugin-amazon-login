@@ -31,20 +31,16 @@ import com.amazon.identity.auth.device.api.workflow.RequestContext;
 public class AmazonLoginPlugin extends CordovaPlugin {
     private static final String TAG = "AmazonLoginPlugin";
 
-    private static final String CODE_CHALLENGE_METHOD = "S256";
+    private static final String CODE_CHALLENGE_METHOD = "plain";
 
-    private static final String ACTION_AUTHORIZE = "authorize";
     private static final String ACTION_AUTHORIZE_AVS = "authorizeAVS";
-    private static final String ACTION_FETCH_USER_PROFILE = "fetchUserProfile";
-    private static final String ACTION_GET_TOKEN = "getToken";
-    private static final String ACTION_SIGNOUT = "signOut";
 
     private static final String OPTION_KEY_PRODUCT_ID = "productID";
     private static final String OPTION_KEY_DEVICE_SERIAL_NUMBER = "deviceSerialNumber";
     private static final String OPTION_KEY_CODE_CHALLENGE = "codeChallenge";
 
     private static final String KEY_PRODUCT_INSTANCE_ATTRS = "productInstanceAttributes";
-    private static final String SCOPE_AVS_PRE_AUTH = "alexa:voice_service:pre_auth";
+        private static final String SCOPE_AVS_PRE_AUTH = "alexa:voice_service:pre_auth profile";
     private static final String SCOPE_ALEXA_ALL = "alexa:all";
 
     private static final String FIELD_ACCESS_TOKEN = "accessToken";
@@ -92,98 +88,14 @@ public class AmazonLoginPlugin extends CordovaPlugin {
 
         this.savedCallbackContext = callbackContext;
 
-        if (ACTION_AUTHORIZE.equals(action)) {
-            Log.i(TAG, "Authorization started");
-
-            cordova.getThreadPool().execute(new Runnable() {
-                public void run() {
-                    AuthorizationManager.authorize(new AuthorizeRequest
-                            .Builder(requestContext)
-                            .addScopes(ProfileScope.profile(), ProfileScope.postalCode())
-                            .build());
-                }
-            });
-        } else if (ACTION_AUTHORIZE_AVS.equals(action)) {
-              Log.i(TAG, "AVS Authorization started");
+        if (ACTION_AUTHORIZE_AVS.equals(action)) {
+            Log.i(TAG, "AVS Authorization started");
 
               cordova.getThreadPool().execute(new Runnable() {
                   public void run() {
                     startAvsAuthorization(args.optJSONObject(0), callbackContext);
                   }
               });
-
-          } else if (ACTION_FETCH_USER_PROFILE.equals(action)) {
-            Log.i(TAG, "User Profile fetching started");
-            cordova.getThreadPool().execute(new Runnable() {
-                public void run() {
-                    User.fetch(cordova.getActivity(), new Listener<User, AuthError>() {
-
-                        /* fetch completed successfully. */
-                        @Override
-                        public void onSuccess(User user) {
-                            sendUserResult(user);
-                        }
-
-                        /* There was an error during the attempt to get the profile. */
-                        @Override
-                        public void onError(AuthError ae) {
-                            savedCallbackContext.error("Trouble obtaining the profile");
-                        }
-                    });
-                }
-            });
-
-        } else if (ACTION_GET_TOKEN.equals(action)) {
-            Log.i(TAG, "Get token started");
-
-            //TODO add an option to pass scopes
-            final Scope[] scopes = {ProfileScope.profile(), ProfileScope.postalCode()};
-
-            cordova.getThreadPool().execute(new Runnable() {
-                public void run() {
-                    AuthorizationManager.getToken(cordova.getActivity(), scopes, new Listener<AuthorizeResult, AuthError>() {
-
-                        @Override
-                        public void onSuccess(AuthorizeResult result) {
-                            if (result.getAccessToken() != null) {
-                        /* The user is signed in */
-                                sendAuthorizeResult(result);
-                            } else {
-                                savedCallbackContext.error("The user is not signed in");
-                            }
-                        }
-
-                        @Override
-                        public void onError(AuthError ae) {
-                    /* The user is not signed in */
-                            savedCallbackContext.error("The user is not signed in");
-
-                        }
-                    });
-                }
-            });
-        } else if (ACTION_SIGNOUT.equals(action)) {
-            Log.i(TAG, "Signout started");
-            cordova.getThreadPool().execute(new Runnable() {
-                public void run() {
-                    AuthorizationManager.signOut(cordova.getActivity().getApplicationContext(), new Listener<Void, AuthError>() {
-                        @Override
-                        public void onSuccess(Void response) {
-                            // Set logged out state in UI
-                            savedCallbackContext.success("The user is signed out");
-                        }
-
-                        @Override
-                        public void onError(AuthError authError) {
-                            // Log the error
-                            savedCallbackContext.error("The user is not signed out");
-                        }
-                    });
-                }
-            });
-        } else {
-            Log.i(TAG, "Action " + action + "doesn't exist");
-            return false;
         }
         return true;
     }
