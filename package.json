@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-amazon-login",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "scripts": {
     "version": "node ./scripts/sync-plugin-version.js && git add ."
   },
