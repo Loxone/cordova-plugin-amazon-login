@@ -9,11 +9,14 @@
 - (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)
             url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+    
 
-    // NSLog(@"AmazonLoginPlugin Plugin handle openURL");
-    return [AMZNAuthorizationManager handleOpenURL:url
-                                 sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]];
-
+    if ([url.absoluteString rangeOfString:@"amzn-"].location == NSNotFound) {
+        return [super application:application openURL:url options:options];
+    } else {
+        return [AMZNAuthorizationManager handleOpenURL:url
+                                sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]];
+    }
 }
 
 @end
